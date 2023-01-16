@@ -1,8 +1,11 @@
 <template>
   <div id="app">
     <nav>
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+      <router-link to="/">Home</router-link>
+      <router-link to="/add/purchase" class="mx-3"
+        >Adauga cheltuiala
+      </router-link>
+      <router-link to="/add/category">Adauga categorie</router-link>
     </nav>
     <router-view />
   </div>
