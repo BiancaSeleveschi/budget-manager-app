@@ -66,17 +66,6 @@ export default new Vuex.Store({
         return 0;
       });
     },
-    getCategoryWithMinPrice: (state) => {
-      let minPrice = Number.MAX_SAFE_INTEGER;
-      let category;
-      for (let i = 0; i < state.purchases.length; i++) {
-        if (state.purchases[i].price < minPrice) {
-          minPrice = state.purchases[i].price;
-          category = state.purchases[i].category;
-        }
-      }
-      return category;
-    },
     getPurchasesByCategory: (state) => (category) => {
       return state.purchases.filter((p) => p.category === category);
     },

@@ -1,25 +1,25 @@
 <template>
   <div>
-    <div
-      class="d-inline-block m-3"
-      v-for="(category, index) in this.$store.state.categories"
-      :key="index"
+    <!--    <div-->
+    <!--      class="d-inline-block m-3"-->
+    <!--      v-for="(category, index) in this.$store.state.categories"-->
+    <!--      :key="index"-->
+    <!--    >-->
+    <button
+      @click="showPurchasesByCategory"
+      class="p-3 rounded-2 fw-bold"
+      :class="{
+        'bg-success': category === 'Haine',
+        'bg-primary': category === 'Mancare',
+        'bg-secondary': category === 'Utilitati',
+        'bg-warning': category === 'Distractie',
+        'bg-info': category === 'Altele',
+      }"
     >
-      <button
-        @click="showPurchasesByCategory"
-        class="p-3 rounded-2 fw-bold"
-        :class="{
-          'bg-success': category === 'Haine',
-          'bg-primary': category === 'Mancare',
-          'bg-secondary': category === 'Utilitati',
-          'bg-warning': category === 'Distractie',
-          'bg-info': category === 'Altele',
-        }"
-      >
-        {{ category }}
-      </button>
-    </div>
-    <div v-show="showCategory">
+      {{ category }}
+    </button>
+    <!--    </div>-->
+    <div v-show="showPurchase">
       <PurchaseList :purchases="purchases" />
     </div>
   </div>
@@ -27,44 +27,57 @@
 
 <script>
 import PurchaseList from "@/components/PurchaseList";
+
 export default {
   name: "PurchaseCategory",
   components: { PurchaseList },
+  props: ["category"],
   data() {
     return {
-      showCategory: false,
-      category: "",
-      purchases: this.purchasess(),
+      showPurchase: false,
+      // category: "",
+      purchases: this.getPurchases(),
     };
   },
+  computed: {
+    // purchases() {
+    //   if (this.category) {
+    //     return this.$store.getters.getPurchasesByCategory(this.category);
+    //   }
+    //   return this.$store.state.purchases;
+    // },
+  },
   methods: {
-    purchasess(category) {
-      return this.$store.getters.getPurchasesByCategory(category);
-    },
     showPurchasesByCategory() {
-      this.showCategory = !this.showCategory;
+      this.showPurchase = !this.showPurchase;
+      // this.category = category;
+    },
+    getPurchases() {
+      return this.$store.state.purchases.filter(
+        (p) => p.category === this.category
+      );
     },
   },
 };
 </script>
 
 <style>
-.np-color-preview {
-  height: 200px;
-  width: 200px;
-  padding: 6px;
-  border-radius: 4px;
-  color: #fff;
-}
+/*.np-color-preview {*/
+/*  height: 200px;*/
+/*  width: 200px;*/
+/*  padding: 6px;*/
+/*  border-radius: 4px;*/
+/*  color: #fff;*/
+/*}*/
 
-.np-btn {
-  margin-top: 12px;
-  background: #eee;
-  border: 0px;
-  padding: 6px 10px;
-  border-radius: 4px;
-  background: rgb(0, 70, 201);
-  color: #fff;
-  cursor: pointer;
-}
+/*.np-btn {*/
+/*  margin-top: 12px;*/
+/*  background: #eee;*/
+/*  border: 0px;*/
+/*  padding: 6px 10px;*/
+/*  border-radius: 4px;*/
+/*  background: rgb(0, 70, 201);*/
+/*  color: #fff;*/
+/*  cursor: pointer;*/
+/*}*/
 </style>

@@ -8,8 +8,18 @@
       <PurchaseList :purchases="purchases" />
     </div>
     <h3 class="my-3">Categoriile sunt:</h3>
-    <PurchaseCategory />
-
+    <div
+      class="d-inline-block m-3"
+      v-for="(category, index) in this.$store.state.categories"
+      :key="index"
+    >
+      <PurchaseCategory :category="category" />
+    </div>
+    <!--    <div v-show="showPurchaseByCategory">-->
+    <!--    <PurchaseList :purchases="purchasesByCategory"/>-->
+    <!--  </div>-->
+    <!--    <PurchaseCategory @show-purchase="showPurchasesByCategory" />-->
+    <!--    <Category :purchases="filteredPurchase" />-->
     <!--    <h3>Categoria pentru care s-a cheltuit cei mai putini bani este:</h3>-->
     <!--    <Category :category="cheapestCategory" />-->
     <!--    <h3>Categoria pentru care s-a cheltuit cei mai putini bani este:</h3>-->
@@ -29,9 +39,7 @@
         placeholder="Pretul minim"
       />
       <button @click="searchByPrice" class="search-button mt-2">Search</button>
-      <div v-show="showPurchaseByPrice">
-        <PurchaseList :purchases="purchases" />
-      </div>
+      <PurchaseList :purchases="purchasesBetweenTwoPrices" />
     </div>
     <h3>Sorteaza cheltuielile in functie de pret:</h3>
     <button class="d-block m-auto" @click="sortBy">Sort</button>
@@ -43,35 +51,50 @@
 
 <script>
 import PurchaseList from "@/components/PurchaseList";
-import PurchaseCategory from "@/components/PurchaseCategory";
 // import Category from "@/components/Category";
+import PurchaseCategory from "@/components/PurchaseCategory";
 
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: "Purchases",
-  components: { PurchaseCategory, PurchaseList },
+  components: { PurchaseList, PurchaseCategory },
   data() {
     return {
       purchases: this.$store.state.purchases,
       showAllCategories: false,
-      showCategory: false,
+      showPurchaseByCategory: false,
+      purchasesByCategory: [],
       showSortedPurchases: false,
       sortedPurchases: [],
+      purchasesBetweenTwoPrices: [],
       // cheapestCategory: this.getcheapestCategory,
       // expensiveCategory: this.getexpensiveCategory(),
       minPrice: "",
       maxPrice: "",
       showPurchaseByPrice: false,
+      // filteredPurchase: [],
     };
   },
-  computed: {
-    filteredPurchase() {
-      return this.$store.state.purchases.filter(
-        (p) => p.category === this.category
+  methods: {
+    displayAllCategories() {
+      this.showAllCategories = !this.showAllCategories;
+    },
+    showPurchasesByCategory() {
+      this.showPurchaseByCategory = !this.showPurchaseByCategory;
+      this.purchasesByCategory = this.$store.getters.getPurchasesByCategory(
+        this.category
       );
     },
-  },
-  methods: {
+    sortBy() {
+      this.showSortedPurchases = !this.showSortedPurchases;
+      this.sortedPurchases = this.$store.getters.getPurchasesSortedBy;
+    },
+    searchByPrice() {
+      this.purchasesBetweenTwoPrices = this.$store.getters.getPurchaseByPrice(
+        this.maxPrice,
+        this.minPrice
+      );
+    },
     // getcheapestCategory() {
     //   let minPrice = Number.MAX_SAFE_INTEGER;
     //   let category;
@@ -94,20 +117,6 @@ export default {
     //   }
     //   return category;
     // },
-    displayAllCategories() {
-      this.showAllCategories = !this.showAllCategories;
-    },
-    sortBy() {
-      this.sortedPurchases = this.$store.getters.getPurchasesSortedBy;
-      this.showSortedPurchases = !this.showSortedPurchases;
-    },
-    searchByPrice() {
-      this.showPurchaseByPrice = !this.showPurchaseByPrice;
-      this.purchases = this.$store.getters.getPurchaseByPrice(
-        this.maxPrice,
-        this.minPrice
-      );
-    },
   },
 };
 </script>
