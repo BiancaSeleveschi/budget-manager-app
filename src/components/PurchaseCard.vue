@@ -1,7 +1,5 @@
 <template>
   <div>
-    <!--        <div :style="{ backgroundColor: randomColor }" class="np-color-preview">-->
-    <!--    <button @click="getRandomColor">Categorii</button>-->
     <div
       class="rounded-1 p-4 m-3"
       :class="{
@@ -26,26 +24,9 @@
 export default {
   name: "PurchaseCard",
   props: ["purchase"],
-  data() {
-    return {
-      randomColor: "#ff0000",
-    };
-  },
   methods: {
     deletePurchase() {
       this.$store.dispatch("deletePurchase", this.purchase.name);
-    },
-    getRandomColor() {
-      this.randomColor = this.generateRandomHexColor();
-    },
-    generateRandomHexColor() {
-      const randomColor =
-        "#" + Math.floor(Math.random() * 16777215).toString(16);
-      if (randomColor.length !== 7) {
-        return this.generateRandomHexColor();
-      } else {
-        return randomColor;
-      }
     },
   },
 };

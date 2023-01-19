@@ -1,6 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import PurchaseList from "@/views/PurchaseList";
+import Purchases from "@/views/Purchases";
 import PurchaseForm from "@/views/PurchaseForm";
 import CategoryForm from "@/views/CategoryForm";
 
@@ -9,8 +9,8 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: "/",
-    name: "purchase-list",
-    component: PurchaseList,
+    name: "purchases",
+    component: Purchases,
   },
   {
     path: "/add/purchase",

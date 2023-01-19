@@ -54,7 +54,38 @@ export default new Vuex.Store({
     ],
     categories: ["Mancare", "Distractie", "Haine", "Utilitati", "Altele"],
   },
-  getters: {},
+  getters: {
+    getPurchasesSortedBy: (state) => {
+      return state.purchases.sort(function (a, b) {
+        if (a.price < b.price) {
+          return -1;
+        }
+        if (a.price > b.price) {
+          return 1;
+        }
+        return 0;
+      });
+    },
+    getCategoryWithMinPrice: (state) => {
+      let minPrice = Number.MAX_SAFE_INTEGER;
+      let category;
+      for (let i = 0; i < state.purchases.length; i++) {
+        if (state.purchases[i].price < minPrice) {
+          minPrice = state.purchases[i].price;
+          category = state.purchases[i].category;
+        }
+      }
+      return category;
+    },
+    getPurchasesByCategory: (state) => (category) => {
+      return state.purchases.filter((p) => p.category === category);
+    },
+    getPurchaseByPrice: (state) => (maxPrice, minPrice) => {
+      return state.purchases.filter(
+        (p) => p.price < maxPrice && p.price > minPrice
+      );
+    },
+  },
   mutations: {
     DELETE_PURCHASE(state, name) {
       let index = state.purchases.findIndex((p) => p.name === name);

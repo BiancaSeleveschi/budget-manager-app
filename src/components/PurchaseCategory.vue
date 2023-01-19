@@ -1,68 +1,48 @@
 <template>
   <div>
-    <!--        <div :style="{ backgroundColor: randomColor }" class="np-color-preview">-->
     <div
-      @click="showCategories"
-      class="p-3 rounded-2 fw-bold"
-      :class="{
-        'bg-success': category === 'Haine',
-        'bg-primary': category === 'Mancare',
-        'bg-secondary': category === 'Utilitati',
-        'bg-warning': category === 'Distractie',
-        'bg-info': category === 'Altele',
-      }"
+      class="d-inline-block m-3"
+      v-for="(category, index) in this.$store.state.categories"
+      :key="index"
     >
-      {{ category }}
+      <button
+        @click="showPurchasesByCategory"
+        class="p-3 rounded-2 fw-bold"
+        :class="{
+          'bg-success': category === 'Haine',
+          'bg-primary': category === 'Mancare',
+          'bg-secondary': category === 'Utilitati',
+          'bg-warning': category === 'Distractie',
+          'bg-info': category === 'Altele',
+        }"
+      >
+        {{ category }}
+      </button>
     </div>
     <div v-show="showCategory">
-      <h4>Sorteaza categoria dupa pret</h4>
-      <div
-        v-for="(purchase, index) in filteredPurchase"
-        :key="index"
-        class="d-inline-block"
-      >
-        <PurchaseCard :purchase="purchase" />
-      </div>
+      <PurchaseList :purchases="purchases" />
     </div>
-    <!--      <button @click="getRandomColor" class="np-btn">Cate</button>-->
   </div>
 </template>
 
 <script>
-import PurchaseCard from "@/components/PurchaseCard";
+import PurchaseList from "@/components/PurchaseList";
 export default {
   name: "PurchaseCategory",
-  components: { PurchaseCard },
-  props: ["category"],
+  components: { PurchaseList },
   data() {
     return {
-      randomColor: "#ff0000",
       showCategory: false,
-      indexCategory: -1,
+      category: "",
+      purchases: this.purchasess(),
     };
   },
-  computed: {
-    filteredPurchase() {
-      return this.$store.state.purchases.filter(
-        (p) => p.category === this.category
-      );
-    },
-  },
   methods: {
-    showCategories() {
+    purchasess(category) {
+      return this.$store.getters.getPurchasesByCategory(category);
+    },
+    showPurchasesByCategory() {
       this.showCategory = !this.showCategory;
-    },
-    getRandomColor() {
-      this.randomColor = this.generateRandomHexColor();
-    },
-    generateRandomHexColor() {
-      const randomColor =
-        "#" + Math.floor(Math.random() * 16777215).toString(16);
-      if (randomColor.length !== 7) {
-        return this.generateRandomHexColor();
-      } else {
-        return randomColor;
-      }
     },
   },
 };
