@@ -1,7 +1,8 @@
 <template>
   <div>
+    <h3 class="m-4">Adauga categorie</h3>
     <input v-model="category" placeholder="category" type="text" />
-    <button @click="addCategory">Add</button>
+    <button class="add-button" @click="addCategory">Add</button>
   </div>
 </template>
 
@@ -22,4 +23,10 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style>
+.add-button {
+border-radius: 5px;
+  background: #175dff;
+  color: white;
+}
+</style>

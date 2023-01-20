@@ -55,7 +55,7 @@ export default new Vuex.Store({
     categories: ["Mancare", "Distractie", "Haine", "Utilitati", "Altele"],
   },
   getters: {
-    getPurchasesSortedBy: (state) => {
+    getPurchasesSortedByPrice: (state) => {
       return state.purchases.sort(function (a, b) {
         if (a.price < b.price) {
           return -1;
@@ -69,7 +69,7 @@ export default new Vuex.Store({
     getPurchasesByCategory: (state) => (category) => {
       return state.purchases.filter((p) => p.category === category);
     },
-    getPurchaseByPrice: (state) => (maxPrice, minPrice) => {
+    getPurchasesByPrice: (state) => (maxPrice, minPrice) => {
       return state.purchases.filter(
         (p) => p.price < maxPrice && p.price > minPrice
       );
@@ -83,6 +83,9 @@ export default new Vuex.Store({
     ADD_CATEGORY(state, category) {
       state.categories.push(category);
     },
+    ADD_PURCHASE(state, purchase) {
+      state.purchases.push(purchase);
+    },
   },
   actions: {
     deletePurchase(context, name) {
@@ -90,6 +93,9 @@ export default new Vuex.Store({
     },
     addCategory(context, category) {
       context.commit("ADD_CATEGORY", category);
+    },
+    addPurchase(context, purchase) {
+      context.commit("ADD_PURCHASE", purchase);
     },
   },
   modules: {},
